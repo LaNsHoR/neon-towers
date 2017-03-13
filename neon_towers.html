@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Neon Towers</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="theme/style.css">
+	</head>
+	<body>
+		<script src="libs/three.min.js"></script>
+		<script src="https://dl.dropboxusercontent.com/u/3587259/Code/Threejs/OrbitControls.js"></script>
+
+		<script type="text/javascript">
+			var NEON = {};
+		</script>
+		<script src="engine/game.js"></script>
+		<script src="engine/path.js"></script>
+		<script src="engine/map.js"></script>
+		<script src="engine/cell.js"></script>
+		<script src="engine/enemy.js"></script>
+		<script src="engine/tower.js"></script>
+		<script src="engine/base.js"></script>
+		
+
+
+		<div style="border:2px solid green; font-family:monospace; color:#0F0; padding:5px">
+			Money: <span id='money'></span>
+		</div>
+		<div style="border:2px solid green; font-family:monospace; color:#0F0; padding:5px">
+			<button onclick="buildGreenTower()" style="background: #0F0;padding: 3px;cursor: pointer;">Build Green Tower</button>
+		</div>
+		<div style="border:2px solid green; font-family:monospace; color:#0F0; padding:5px">
+			Total waves: <span id='total_waves'></span>
+			<button onclick="game.nextWave()" style="background: #0F0;padding: 3px;cursor: pointer;">Next Wave</button>
+			||
+			<button onclick="game.swapViewRanges()" style="background: #0F0;padding: 3px;cursor: pointer;">Show / Hide Ranges</button>
+		</div>
+		<script type="text/javascript">
+			setInterval( () => {
+				money.innerHTML = game.money;
+				total_waves.innerHTML = game.wave;
+			}, 100)
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,22 @@
+/* Reset CSS */
+*
+{
+	margin:0;
+	padding:0;
+	border:0;
+	text-decoration:0;
+}
+
+body
+{
+	background:#000;
+	overflow: hidden;
+}
+
+canvas
+{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	outline: 3px solid #0F0
+}
