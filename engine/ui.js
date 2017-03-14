@@ -12,6 +12,10 @@ NEON.UI = function ( parameters )
 	// Controls
 	this.mouse_coords = null;
 	this.mouse_controls = null;
+	this.controls = {
+		money : document.getElementById('money'),
+		total_waves : document.getElementById('total_waves')
+	};
 	// Game State
 	this.clock = new THREE.Clock();
 	this.current_state = null; // PLAYING, BUILDING, etc...
@@ -23,10 +27,12 @@ NEON.UI = function ( parameters )
 	{
 		// Scene
 		this.initScene();
-		// UI
+		// Controls
 		this.initControls();
 		// Game
 		this.initGame();
+		// First Control Update
+		this.updateControls();
 	}
 	// ------------------------------
 	this.initScene = function()
@@ -47,6 +53,7 @@ NEON.UI = function ( parameters )
 		this.camera.position.x = -1586.6694179767726;
 		this.camera.position.y =  594.3845039289417;
 		this.camera.position.z =  615.0303060959127;
+		this.camera.lookAt( new THREE.Vector3(0,0,0) );
 	}
 	// ------------------------------
 	this.initControls = function()
@@ -111,6 +118,12 @@ NEON.UI = function ( parameters )
 		{
 			this.building_tower.setCoordinates(intersects[0].object.neon_object.coordinates);
 		}
+	}
+	// ------------------------------
+	this.updateControls = function()
+	{
+		this.controls.money.innerHTML = this.game.money;
+		this.controls.total_waves.innerHTML = this.game.wave;
 	}
 	// ------------------------------
 	this.init();

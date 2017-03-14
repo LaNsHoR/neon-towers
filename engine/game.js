@@ -20,6 +20,12 @@ NEON.Game = function( parameters )
 			array[i].index=i;
 	}
 	// ------------------------------
+	this.addMoney = function( quantity )
+	{
+		this.money += quantity;
+		this.ui.updateControls();
+	}
+	// ------------------------------
 	this.tick = function( delta )
 	{
 		this.spawnEnemies( delta );
@@ -51,7 +57,7 @@ NEON.Game = function( parameters )
 		this.enemies.splice( enemy.index, 1);
 		this.indexUpdate( this.enemies, enemy.index );
 		scene.remove( enemy.mesh );
-		this.money += enemy.money;
+		this.addMoney( enemy.money );
 	}
 	// ------------------------------
 	this.spawnEnemies = function( delta )
@@ -77,6 +83,7 @@ NEON.Game = function( parameters )
 	{
 		this.wave++;
 		this.max_spawned_enemies += 40;
+		this.ui.updateControls();
 	}
 	// ------------------------------
 	this.addTower = function( parameters )
@@ -93,7 +100,7 @@ NEON.Game = function( parameters )
 		tower.range.visible = false;
 		tower.active = true;
 		// substract money
-		this.money -= tower.price;
+		this.addMoney( - tower.price );
 		// success! :)
 		return true;
 	}
