@@ -8,11 +8,11 @@ NEON.Game = function( parameters )
 	this.wave = 0;
 	this.enemies = [];
 	this.current_map = 0x0;
-	this.scene = parameters.scene;
-	this.clock = new THREE.Clock();
+	this.ui = parameters.ui;
 	this.towers = [];
 	this.shoots = [];
 	this.money = 100;
+	var scene = this.ui.scene;
 	// ------------------------------
 	this.indexUpdate = function( array, from )
 	{
@@ -20,9 +20,8 @@ NEON.Game = function( parameters )
 			array[i].index=i;
 	}
 	// ------------------------------
-	this.tick = function()
+	this.tick = function( delta )
 	{
-		var delta = this.clock.getDelta();
 		this.spawnEnemies( delta );
 		for(var i=0; i<this.enemies.length; i++)
 			this.enemies[i].tick( delta );
@@ -38,20 +37,20 @@ NEON.Game = function( parameters )
 	{
 		// TODO: remove current map from scene if it exists
 		this.current_map = map;
-		this.scene.add( map.mesh );
+		scene.add( map.mesh );
 	}
 	// ------------------------------
 	this.addEnemy = function( enemy )
 	{
 		enemy.index = this.enemies.length;
 		this.enemies.push( enemy );
-		this.scene.add( enemy.mesh );
+		scene.add( enemy.mesh );
 	}
 	this.removeEnemy = function( enemy )
 	{
 		this.enemies.splice( enemy.index, 1);
 		this.indexUpdate( this.enemies, enemy.index );
-		this.scene.remove( enemy.mesh );
+		scene.remove( enemy.mesh );
 		this.money += enemy.money;
 	}
 	// ------------------------------
@@ -80,35 +79,36 @@ NEON.Game = function( parameters )
 		this.max_spawned_enemies += 40;
 	}
 	// ------------------------------
-	this.addTower = function( tower )
+	this.addTower = function( parameters )
 	{
+		// tower extraction
+		var tower = parameters.tower;
+		// rules for adding towers
+		if( tower.price > this.money )
+			return false;
+		// indexing and adding
 		tower.index = this.towers.length;
 		this.towers.push( tower );
-		// TODO: I need to check if the tower already is in the scene? 
-		this.scene.add( tower.mesh );
-	}
-	this.createTower = function( parameters )
-	{
-		var tower = parameters.tower || new NEON.TowerTypes["Green"]( {coordinates:parameters.coordinates, game:game, cell_size:75} );
-		if( tower.price > this.money )
-			return;
-		this.addTower(tower);
+		// activate tower
 		tower.range.visible = false;
 		tower.active = true;
+		// substract money
 		this.money -= tower.price;
+		// success! :)
+		return true;
 	}
 	// ------------------------------
 	this.addShoot = function( shoot )
 	{
 		shoot.index = this.shoots.length;
 		this.shoots.push( shoot );
-		this.scene.add( shoot.mesh );
+		scene.add( shoot.mesh );
 	}
 	this.removeShoot = function( shoot )
 	{
 		this.shoots.splice( shoot.index, 1);
 		this.indexUpdate( this.shoots, shoot.index );
-		this.scene.remove( shoot.mesh );
+		scene.remove( shoot.mesh );
 	}
 }
 
