@@ -24,7 +24,9 @@
 		<script src="engine/ui_commands.js"></script>
 
 		<script src="game/towers/green.js"></script>
+		<script src="game/towers/void_ray.js"></script>
 		<script src="game/shoots/basic.js"></script>
+		<script src="game/shoots/ray.js"></script>
 		<script src="game/maps/map_0001.js"></script>
 		<script src="game/maps/map_0002.js"></script>
 
@@ -33,6 +35,7 @@
 		</div>
 		<div style="border:2px solid green; font-family:monospace; color:#0F0; padding:5px">
 			<button onclick="game_ui.BuildTower( {tower_type:'Green'} )" style="background: #0F0;padding: 3px;cursor: pointer;">Build Green Tower</button>
+			<button onclick="game_ui.BuildTower( {tower_type:'Void Ray'} )" style="background: #0F0;padding: 3px;cursor: pointer;">Build Void Ray</button>
 		</div>
 		<div style="border:2px solid green; font-family:monospace; color:#0F0; padding:5px">
 			Total waves: <span id='total_waves'></span>
