@@ -13,22 +13,26 @@
 			var NEON = {};
 			NEON.TowerTypes = {};
 			NEON.ShootTypes = {};
+			NEON.AvailableMaps = {};
 		</script>
 		<script src="engine/game.js"></script>
 		<script src="engine/path.js"></script>
 		<script src="engine/map.js"></script>
 		<script src="engine/cell.js"></script>
 		<script src="engine/enemy.js"></script>
-		<script src="engine/base.js"></script>
+		<script src="engine/ui.js"></script>
+		<script src="engine/ui_commands.js"></script>
 
 		<script src="game/towers/green.js"></script>
 		<script src="game/shoots/basic.js"></script>
+		<script src="game/maps/map_0001.js"></script>
+		<script src="game/maps/map_0002.js"></script>
 
 		<div style="border:2px solid green; font-family:monospace; color:#0F0; padding:5px">
 			Money: <span id='money'></span>
 		</div>
 		<div style="border:2px solid green; font-family:monospace; color:#0F0; padding:5px">
-			<button onclick="buildGreenTower()" style="background: #0F0;padding: 3px;cursor: pointer;">Build Green Tower</button>
+			<button onclick="game_ui.BuildTower( {tower_type:'Green'} )" style="background: #0F0;padding: 3px;cursor: pointer;">Build Green Tower</button>
 		</div>
 		<div style="border:2px solid green; font-family:monospace; color:#0F0; padding:5px">
 			Total waves: <span id='total_waves'></span>
@@ -36,11 +40,19 @@
 			||
 			<button onclick="game.swapViewRanges()" style="background: #0F0;padding: 3px;cursor: pointer;">Show / Hide Ranges</button>
 		</div>
-		<script type="text/javascript">
-			setInterval( () => {
-				money.innerHTML = game.money;
-				total_waves.innerHTML = game.wave;
-			}, 100)
+		<script>
+			// Game set up
+			var game_setup = {canvas_width:800, canvas_height:800};
+			var game_ui = new NEON.UI( game_setup );
+			var game = game_ui.game;
+			game.setCurrentMap( NEON.AvailableMaps["Test Map 1"] );
+
+			// Game loop
+			(function GameLoop()
+			{
+				requestAnimationFrame( GameLoop );
+				game_ui.tick();
+			}());
 		</script>
 
 	</body>
