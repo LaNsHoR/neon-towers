@@ -48,7 +48,7 @@ NEON.TowerTypes['Green'] = function( parameters )
 		// tower
 		var height = 50;
 		var cell_size = this.game.current_map.cell_size;
-		var geometry = new THREE.BoxGeometry( cell_size, height, cell_size );
+		var geometry = new THREE.BoxGeometry( 70, height, 70 );
 		var material = new THREE.MeshPhongMaterial( {color:0x00FF00, overdraw:0.5 } );
 		var position = this.game.current_map.getPositionFromCoordinates(this.coordinates.x, this.coordinates.z);
 		this.tower = new THREE.Mesh( geometry, material );
