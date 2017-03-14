@@ -53,9 +53,10 @@ NEON.UI = function ( parameters )
 	{
 		// Compute mouse coordinates over canvas
 		this.mouse = new THREE.Vector2();
-		this.renderer.domElement.addEventListener( 'mousemove', () => {
-			this.mouse.x =   ( event.clientX / this.canvas_width  ) * 2 - 1;
-			this.mouse.y = - ( event.clientY / this.canvas_height ) * 2 + 1;
+		var canvas_position = this.renderer.domElement.getClientRects()[0];
+		this.renderer.domElement.addEventListener( 'mousemove', (event) => {
+			this.mouse.x =   ( (event.clientX-canvas_position.left) / this.canvas_width  ) * 2 - 1;
+			this.mouse.y = - ( (event.clientY-canvas_position.top) / this.canvas_height ) * 2 + 1;
 		}, false );
 		this.mouse_controls = new THREE.OrbitControls( this.camera );
 		// Compute mouse click

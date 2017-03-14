@@ -111,4 +111,3 @@ NEON.Game = function( parameters )
 		scene.remove( shoot.mesh );
 	}
 }
-
