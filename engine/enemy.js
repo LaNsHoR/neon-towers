@@ -30,7 +30,7 @@ NEON.EnemyTypes['*'] = function( parameters )
 	// ------------------------------
 	this.init = function()
 	{
-		var segments = 32;
+		var segments = 8;
 		var geometry = new THREE.SphereGeometry( this.size, segments, segments );
 		var material = new THREE.MeshPhongMaterial( {color:0xffffff, overdraw:0.5 } );
 		this.mesh = new THREE.Mesh( geometry, material );

@@ -47,7 +47,7 @@ NEON.TowerTypes['Void Ray'] = function( parameters )
 		// tower
 		var height = 100;
 		var cell_size = this.game.current_map.cell_size;
-		var geometry = new THREE.ConeBufferGeometry( 30, height, 32 );
+		var geometry = new THREE.ConeBufferGeometry( 30, height, 8 );
 		var material = new THREE.MeshPhongMaterial( {color:0x1c6670, overdraw:0.5 } );
 		var position = this.game.current_map.getPositionFromCoordinates(this.coordinates.x, this.coordinates.z);
 		this.tower = new THREE.Mesh( geometry, material );

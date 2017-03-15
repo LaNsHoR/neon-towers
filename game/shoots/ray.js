@@ -3,7 +3,7 @@ NEON.ShootTypes['Ray'] = function( parameters )
 	// ------------------------------
 	this.game = parameters.game;
 	this.tower = parameters.tower;
-	this.dps = 10;
+	this.dps = 200;
 	this.damage = 0;
 	// ------------------------------
 	this.tick = function( delta )
