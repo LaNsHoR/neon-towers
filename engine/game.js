@@ -101,6 +101,8 @@ NEON.Game = function( parameters )
 		tower.active = true;
 		// substract money
 		this.addMoney( - tower.price );
+		// play tower sound
+		NEON.Sound.play( {sound_id:'sound_tower'} );
 		// success! :)
 		return true;
 	}

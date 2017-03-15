@@ -33,6 +33,8 @@ NEON.UI = function ( parameters )
 		this.initGame();
 		// First Control Update
 		this.updateControls();
+		// Play music
+		NEON.Sound.play( {sound_id:'music_factorized', loop:true, volume:0.5} );
 	}
 	// ------------------------------
 	this.initScene = function()
