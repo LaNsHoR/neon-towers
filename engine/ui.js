@@ -22,6 +22,10 @@ NEON.UI = function ( parameters )
 	this.game = null;
 	// Internal objects which don't belong to the game
 	this.building_tower = null;
+	// Visuals
+	this.show_ranges = false;
+	// Sounds
+	this.music = null;
 	// ------------------------------
 	this.init = function()
 	{
@@ -34,7 +38,8 @@ NEON.UI = function ( parameters )
 		// First Control Update
 		this.updateControls();
 		// Play music
-		NEON.Sound.play( {sound_id:'music_factorized', loop:true, volume:0.5} );
+		this.music = music_factorized;
+		NEON.Sound.play( {sound:this.music, loop:true, volume:0.5} );
 	}
 	// ------------------------------
 	this.initScene = function()
