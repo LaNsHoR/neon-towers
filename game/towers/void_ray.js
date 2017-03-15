@@ -1,27 +1,21 @@
-NEON.TowerTypes['Green'] = function( parameters )
+NEON.TowerTypes['Void Ray'] = function( parameters )
 {
 	// ------------------------------
-	this.price = 50;
+	this.price = 100;
 	this.game = parameters.game;
 	this.coordinates = parameters.coordinates;
 	this.level = parameters.level || 1;
 	this.range_radius = 300;
-	this.shoot_cooldown = 0.15;
-	this.last_shoot = -this.shoot_cooldown;
 	this.active = typeof( parameters.active ) == "undefined" ? true : parameters.active;
+	this.ray = null;
 	// ------------------------------
 	this.tick = function(delta)
 	{
-		this.last_shoot += delta;
-
+		this.ray.mesh.visible = false;
 		if( ! this.active )
 			return;
-
-		if(this.last_shoot > this.shoot_cooldown )
-		{
-			this.last_shoot %= this.shoot_cooldown;
-			this.searchEnemies();
-		}
+		this.searchEnemies();
+		this.ray.tick( delta );
 	}
 	// ------------------------------
 	this.searchEnemies = function()
@@ -39,30 +33,39 @@ NEON.TowerTypes['Green'] = function( parameters )
 	// ------------------------------
 	this.shoot = function ( enemy )
 	{
-		var shoot = new NEON.ShootTypes["Basic"]( {game:this.game, target:enemy, position:this.mesh.position} );
-		this.game.addShoot( shoot );
+		// update ray
+		this.ray.mesh.visible = true;
+		this.ray.mesh.geometry.vertices[1] = this.ray.mesh.worldToLocal(enemy.mesh.position.clone());
+		this.ray.mesh.geometry.verticesNeedUpdate = true;
+		this.ray.damage 
+		// impact enemy
+		enemy.impact( this.ray );
 	}
 	// ------------------------------
 	this.init = function()
 	{
 		// tower
-		var height = 50;
+		var height = 100;
 		var cell_size = this.game.current_map.cell_size;
-		var geometry = new THREE.BoxGeometry( 70, height, 70 );
-		var material = new THREE.MeshPhongMaterial( {color:0x00FF00, overdraw:0.5 } );
+		var geometry = new THREE.ConeBufferGeometry( 30, height, 8 );
+		var material = new THREE.MeshPhongMaterial( {color:0x1c6670, overdraw:0.5 } );
 		var position = this.game.current_map.getPositionFromCoordinates(this.coordinates.x, this.coordinates.z);
 		this.tower = new THREE.Mesh( geometry, material );
 		this.tower.position.y = height/2;
 		// range
 		var geometry = new THREE.CircleGeometry( this.range_radius, 32 );
-		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00, transparent:true, opacity:0.1 } );
+		var material = new THREE.MeshBasicMaterial( { color: 0x1c6670, transparent:true, opacity:0.1 } );
 		this.range = new THREE.Mesh( geometry, material );
 		this.range.position.y = 0.5;
 		this.range.rotateX(-Math.PI/2);
+		// ray
+		this.ray = new NEON.ShootTypes['Ray']( {tower:this} );
+		this.ray.mesh.position.y = height;
 		// final_mesh
 		this.mesh = new THREE.Group();
 		this.mesh.add(this.tower);
 		this.mesh.add(this.range);
+		this.mesh.add(this.ray.mesh);
 		this.mesh.position.y = 36;
 		this.mesh.position.x = position.x;
 		this.mesh.position.z = position.z;
