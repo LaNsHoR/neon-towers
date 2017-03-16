@@ -10,6 +10,7 @@ NEON.Game = function( parameters )
 	this.current_map = 0x0;
 	this.ui = parameters.ui;
 	this.towers = [];
+	this.tower_meshes = [];
 	this.shoots = [];
 	this.money = 100;
 	var scene = this.ui.scene;
@@ -96,6 +97,7 @@ NEON.Game = function( parameters )
 		// indexing and adding
 		tower.index = this.towers.length;
 		this.towers.push( tower );
+		this.tower_meshes.push( tower.mesh );
 		// activate tower
 		tower.range.visible = false;
 		tower.active = true;

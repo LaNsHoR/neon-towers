@@ -18,12 +18,14 @@ NEON.UI = function ( parameters )
 	};
 	// Game State
 	this.clock = new THREE.Clock();
-	this.current_state = null; // PLAYING, BUILDING, etc...
+	this.current_state = "IDLE"; // IDLE || BUILDING, etc...
 	this.game = null;
 	// Internal objects which don't belong to the game
 	this.building_tower = null;
 	// Visuals
 	this.show_ranges = false;
+	this.color_selected = new THREE.Color(0x333300);
+	this.current_selected = null;
 	// Sounds
 	this.music = null;
 	// ------------------------------
@@ -39,7 +41,9 @@ NEON.UI = function ( parameters )
 		this.updateControls();
 		// Play music
 		this.music = music_factorized;
-		NEON.Sound.play( {sound:this.music, loop:true, volume:0.5} );
+		
+		// Music disabled for development
+		//NEON.Sound.play( {sound:this.music, loop:true, volume:0.5} );
 	}
 	// ------------------------------
 	this.initScene = function()
@@ -76,15 +80,23 @@ NEON.UI = function ( parameters )
 		// Compute mouse click
 		this.renderer.domElement.addEventListener( 'mouseup', (event) =>
 		{
-			if( this.current_state == 'BUILDING')
+			switch(this.current_state)
 			{
-				this.current_state = null;
-				if( ! game.addTower({tower:this.building_tower}) )
-				{
-					// Remove the tower mesh from the scene if the game deny the tower adition
-					this.scene.remove( this.building_tower.mesh );
-				}
-				this.building_tower = null;
+				case 'BUILDING':
+					this.current_state = 'IDLE';
+					if( ! game.addTower({tower:this.building_tower}) )
+					{
+						// Remove the tower mesh from the scene if the game deny the tower adition
+						this.scene.remove( this.building_tower.mesh );
+					}
+					this.building_tower = null;
+					break;
+				case 'IDLE':
+					if( this.current_selected )
+					{
+						tower_info.innerHTML = 'Hello World';
+					}
+					break;
 			}
 		});
 		// Init raycaster
@@ -107,6 +119,7 @@ NEON.UI = function ( parameters )
 		switch( this.current_state )
 		{
 			case 'BUILDING': this.processStateBuilding(); break;
+			case 'IDLE': this.processStateIdle(); break;
 		}
 		// Update game logic
 		this.game.tick( delta );
@@ -125,6 +138,25 @@ NEON.UI = function ( parameters )
 		{
 			this.building_tower.setCoordinates(intersects[0].object.neon_object.coordinates);
 		}
+	}
+	this.processStateIdle = function()
+	{
+		// update the picking ray with the camera and mouse position
+		this.raycaster.setFromCamera( this.mouse, this.camera );
+		// calculate objects intersecting the picking ray (only in the map grid)
+		var intersects = this.raycaster.intersectObjects( this.game.tower_meshes, true );
+		// update the temporary tower position if the mouse is in a buildable position
+		if( intersects.length )
+		{
+			this.current_selected = intersects[0].object;
+			this.current_selected.material = this.current_selected.material_selected;
+		}
+		else if( this.current_selected )
+		{
+			this.current_selected.material = this.current_selected.material_default;
+			this.current_selected = null;
+		}
+
 	}
 	// ------------------------------
 	this.updateControls = function()
